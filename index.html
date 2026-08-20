@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>“球会友谊联赛技能积分兑换系统”</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        body { background: #f5f5f5; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .container { background: #fff; border: 1px solid #000; padding: 20px; }
+        .login-box { margin-bottom: 20px; }
+        .login-box h3 { margin-bottom: 10px; font-weight: 600; color: #000; }
+        input { width: 100%; padding: 10px 0; margin-bottom: 15px; border: none; border-bottom: 1px solid #000; background: transparent; color: #000; font-size: 16px; outline: none; }
+        button { background: #fff; color: #000; border: 1px solid #000; padding: 8px 16px; font-size: 14px; cursor: pointer; }
+        button:hover { background: #f0f0f0; }
+        .hidden { display: none; }
+        .warning-box { background: #f9f9f9; border: 1px solid #000; padding: 12px; margin-bottom: 15px; font-size: 14px; color: #000; text-align: center; font-weight: 500; }
+        .section-title { font-size: 18px; font-weight: bold; color: #000; margin: 20px 0 10px; padding-bottom: 5px; border-bottom: 1px solid #000; }
+        .star-card { border: 1px solid #000; padding: 15px; margin-bottom: 15px; }
+        .star-name { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
+        .star-info { font-size: 14px; color: #555; margin-bottom: 5px; }
+        .star-skills { font-size: 14px; color: #000; line-height: 1.6; }
+        .back-btn { display: block; width: 100%; padding: 10px; font-size: 16px; margin-bottom: 20px; }
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .container { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 登录界面 -->
+        <div id="loginSection" class="login-box">
+            <h3>队员登录</h3>
+            <div class="warning-box">本系统与主站积分互通，登录使用相同账号与密码后4位。</div>
+            <input type="text" id="accountInput" placeholder="账号">
+            <input type="password" id="passwordLast4Input" placeholder="密码后4位" maxlength="4">
+            <button onclick="loginUser()">登录</button>
+        </div>
+
+        <!-- 主界面 -->
+        <div id="mainSection" class="hidden">
+            <button class="back-btn" onclick="goBack()">← 返回主站</button>
+            <h2 style="text-align:center; margin-bottom:20px;">“球会友谊联赛技能积分兑换系统”</h2>
+            <div class="warning-box">完成以下技能即可获得相应积分，积分由管理员核实后添加至主站账户。</div>
+
+            <!-- 守门员 -->
+            <div class="section-title">守门员</div>
+            <div class="star-card"><div class="star-name">伊克尔·卡西利亚斯</div><div class="star-info">西班牙 | 皇家马德里</div><div class="star-skills">技能：第二反应、破解单刀、出击型守门员。出现其中任意一个技能并封堵对手进攻2次，获得5积分。</div></div>
+            <div class="star-card"><div class="star-name">詹路易吉·布冯</div><div class="star-info">意大利 | 帕尔马</div><div class="star-skills">技能：出击型守门员。出击并完全封堵对手3次，获得5积分。</div></div>
+            <div class="star-card"><div class="star-name">埃米利亚诺·马丁内斯</div><div class="star-info">阿根廷 | 阿斯顿维拉</div><div class="star-skills">技能：抽射挡出。对手暴力射门完全破解2次，获得5积分。</div></div>
+            <div class="star-card"><div class="star-name">奥利弗·卡恩</div><div class="star-info">德国 | 卡尔斯鲁厄</div><div class="star-skills">技能：门线救球、挡出点球。完成任意一项，获得3积分。</div></div>
+
+            <!-- 后卫 -->
+            <div class="section-title">后卫</div>
+            <div class="star-card"><div class="star-name">保罗·马尔蒂尼</div><div class="star-info">意大利 | AC米兰</div><div class="star-skills">技能：优雅卡位。完成卡位防守，获得3积分。</div></div>
+            <div class="star-card"><div class="star-name">法比奥·卡纳瓦罗</div><div class="star-info">意大利 | 皇家马德里</div><div class="star-skills">技能：贴身防守、精准防守。完成任意一项，获得3积分。</div></div>
+            <div class="star-card"><div class="star-name">维吉尔·范戴克</div><div class="star-info">荷兰 | 利物浦</div><div class="star-skills">技能：回追速度、一对一单防。完成任意一项并成功，获得5积分。</div></div>
+            <div class="star-card"><div class="star-name">特伦特·亚历山大·阿诺德</div><div class="star-info">英格兰 | 利物浦</div><div class="star-skills">技能：转移球、精准定位球。完成任意一项并成功，获得5积分。</div></div>
+            <div class="star-card"><div class="star-name">马科斯·埃万热利斯塔·德·莫赖斯</div><div class="star-info">巴西 | AC米兰</div><div class="star-skills">技能：极强体能往返跑、精准沉底。完成任意一项，获得5积分。</div></div>
+
+            <!-- 中场 -->
+            <div class="section-title">中场</div>
+            <div class="star-card"><div class="star-name">卢卡·莫德里奇</div><div class="star-info">克罗地亚 | AC米兰</div><div class="star-skills">技能：原地贴身摆脱、中场节奏控制力强。完成任意一项并成功，获得5积分。</div></div>
+            <div class="star-card"><div class="star-name">凯文·德布劳内</div><div class="star-info">比利时 | 那不勒斯</div><div class="star-skills">技能：暴力射门。完成任意一项且有所体现，获得5积分；成功则再获得3积分。</div></div>
+            <div class="star-card"><div class="star-name">祖德·维克托·威廉·贝林厄姆</div><div class="star-info">英格兰 | 皇家马德里</div><div class="star-skills">技能：速度爆发力强、身体对抗。完成一项并成功，获得8积分。</div></div>
+            <div class="star-card"><div class="star-name">迭戈·阿曼多·马拉多纳</div><div class="star-info">阿根廷 | 博卡青年</div><div class="star-skills">技能：重炮远射、极强体能、推进力强、极准定位球、中场节奏控制力强。完成一项并成功，获得10积分。</div></div>
+            <div class="star-card"><div class="star-name">齐内丁·齐达内</div><div class="star-info">法国 | 皇家马德里</div><div class="star-skills">技能：马赛回旋、停球控场、远射。完成一项并成功，获得7积分。</div></div>
+            <div class="star-card"><div class="star-name">米歇尔·普拉蒂尼</div><div class="star-info">法国 | 尤文图斯</div><div class="star-skills">技能：直塞球、定位球破门。完成一项，获得5积分；实现进球再获得3积分。</div></div>
+
+            <!-- 前锋 -->
+            <div class="section-title">前锋</div>
+            <div class="star-card"><div class="star-name">哈里·爱德华·凯恩</div><div class="star-info">英格兰 | 拜仁慕尼黑</div><div class="star-skills">技能：回撤、转移球、无逆足。完成一项，获得5积分。</div></div>
+            <div class="star-card"><div class="star-name">基利安·姆巴佩</div><div class="star-info">法国 | 巴黎圣日尔曼</div><div class="star-skills">技能：瞬间爆发、直线过人、大范围变向。完成一项，获得5积分。</div></div>
+            <div class="star-card"><div class="star-name">埃尔林·布劳特·哈兰德</div><div class="star-info">挪威（摩洛哥） | 曼彻斯特城</div><div class="star-skills">技能：瞬间爆发、身体卡位、冲刺、暴力抽射。完成一项，获得8积分。</div></div>
+            <div class="star-card"><div class="star-name">路易斯·苏亚雷斯</div><div class="star-info">乌拉圭 | 迈阿密国际</div><div class="star-skills">技能：鬼魅嗅觉、穿裆射门、挑射破门、绝妙射门。完成一项，获得5积分。</div></div>
+            <div class="star-card"><div class="star-name">埃德松·阿兰特斯·多·纳西门托</div><div class="star-info">巴西 | 纽约宇宙</div><div class="star-skills">技能：全能球感、盘带、左右开弓破门、无球跑位。完成一项，获得8积分。</div></div>
+            <div class="star-card"><div class="star-name">罗纳尔多·路易斯·纳扎里奥·迪利马</div><div class="star-info">巴西 | 国际米兰</div><div class="star-skills">技能：爆发力强、钟摆过人、高速变向、贴地斩爆射。完成一项，获得7积分；破门再获得2积分。</div></div>
+            <div class="star-card"><div class="star-name">克里斯蒂亚诺·罗纳尔多</div><div class="star-info">葡萄牙 | 利雅得胜利</div><div class="star-skills">技能：暴力抽射、点球。完成一项，获得8积分。</div></div>
+            <div class="star-card"><div class="star-name">利昂内尔·梅西</div><div class="star-info">阿根廷 | 迈阿密</div><div class="star-skills">技能：连续盘带、上帝视野、精准直塞、贴地斩爆射、点球节奏变换。完成一项，获得15积分；成功再获得5积分。</div></div>
+            <div class="star-card"><div class="star-name">内马尔·达·席尔瓦·桑托斯·儒尼奥尔</div><div class="star-info">巴西 | 桑托斯</div><div class="star-skills">技能：点球。完成，获得8积分。</div></div>
+        </div>
+    </div>
+
+    <script>
+        var SUPABASE_URL = 'https://hjktfecloctfpaoohzax.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhqa3RmZWNsb2N0ZnBhb29oemF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4ODQ5MzksImV4cCI6MjEwMjQ2MDkzOX0.Kd94mBz7-2EX9Xu3HZUKawIgUWCrVbFsH7rXFyz7WUg';
+
+        function getHeaders() {
+            return {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+                'Content-Type': 'application/json'
+            };
+        }
+
+        async function apiFetch(path, options) {
+            options = options || {};
+            options.headers = getHeaders();
+            var response = await fetch(SUPABASE_URL + path, options);
+            if (!response.ok) throw new Error('API错误 ' + response.status);
+            return await response.json();
+        }
+
+        async function loginUser() {
+            var account = document.getElementById('accountInput').value.trim();
+            var last4 = document.getElementById('passwordLast4Input').value.trim();
+            if (!account || !last4) { alert('请输入账号和密码后4位'); return; }
+            try {
+                var data = await apiFetch('/rest/v1/rpc/login_user_last4', {
+                    method: 'POST',
+                    body: JSON.stringify({ p_account: account, p_last4: last4 })
+                });
+                if (data && data.success) {
+                    document.getElementById('loginSection').classList.add('hidden');
+                    document.getElementById('mainSection').classList.remove('hidden');
+                } else {
+                    alert(data.msg || '账号或密码后4位错误');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('登录失败，请检查网络或配置');
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'https://lovewca.github.io/xiaolishenbei-points/';
+        }
+    </script>
+</body>
+</html>
