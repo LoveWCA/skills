@@ -228,18 +228,45 @@
         }
     }
 
-    function submitSelection() {
-        const selected = {};
-        document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
-            selected[input.name] = input.value;
-        });
-        if (Object.keys(selected).length !== 3) {
-            alert('请确保在守门员、后卫、前锋/中场各选择一名球员');
-            return;
-        }
-        alert('技能选择已提交，请等待管理员核实后获得积分。');
-        // 此处可添加提交到数据库的代码（需要后端函数）
+    async function submitSelection() {
+    const selected = {};
+    document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+        selected[input.name] = input.value;
+    });
+    if (Object.keys(selected).length !== 3) {
+        alert('请确保在守门员、后卫、前锋/中场各选择一名球员');
+        return;
     }
+
+    // 获取具体球员名称（需要从数据数组中查找）
+    const gkStars = [...]; // 你的守门员数组
+    const dfStars = [...]; // 后卫数组
+    const fwStars = [...]; // 前锋/中场数组
+
+    const gkName = gkStars.find(s => s.id === selected.gk)?.name || selected.gk;
+    const dfName = dfStars.find(s => s.id === selected.df)?.name || selected.df;
+    const fwName = fwStars.find(s => s.id === selected.fw)?.name || selected.fw;
+
+    try {
+        const data = await apiFetch('/rest/v1/rpc/submit_skill_selection', {
+            method: 'POST',
+            body: JSON.stringify({
+                p_user_id: currentUser.id,
+                p_gk: gkName,
+                p_df: dfName,
+                p_fw_mid: fwName
+            })
+        });
+        if (data && data.success) {
+            alert('技能选择已提交，请等待管理员核实');
+        } else {
+            alert(data.msg || '提交失败');
+        }
+    } catch (e) {
+        console.error(e);
+        alert('提交失败，请重试');
+    }
+}
 
     function logoutUser() {
         currentUser = null;
